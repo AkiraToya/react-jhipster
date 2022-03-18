@@ -1,9 +1,9 @@
 {
-  "name": "react-jhipster",
-  "description": "A Jhipster util library for React",
+  "name": "react-jhipster-daryl",
+  "description": "A Jhipster util library for React Modifed Version",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jhipster/react-jhipster.git"
+    "url": "https://github.com/AkiraToya/react-jhipster.git"
   },
   "keywords": [
     "jhipster",
