@@ -52,34 +52,11 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...rest}>
       {React.Children.map(children, (child: ReactElement) => {
-        if(child.type === Button || child.type === "button") return child;
-
         return processOneChild({ defaultValues, children, onSubmit, mode, ...rest }, 
           {register, setValue, errors, touchedFields, dirtyFields}, child);
       })}
     </Form>
   );
-}
-
-const processChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps, 
-  { register, setValue, errors, touchedFields, dirtyFields }: any, element: ReactElement) => {
-
-  if (element.type === "button" || element.type === Button) return element;
-  if (!element.props) return element;
-  if (!element.props.children) return element;
-
-  if(!Array.isArray(element.props.children)){
-    const newElement = processOneChild({ defaultValues, children, onSubmit, mode, ...rest },
-      { register, setValue, errors, touchedFields, dirtyFields }, element.props.children);
-    
-    if (element.props.children === newElement) return element
-    return newElement
-  }
-
-  return ([...element.props.children].map((child: ReactElement) => {
-    return processOneChild({ defaultValues, children, onSubmit, mode, ...rest },
-      { register, setValue, errors, touchedFields, dirtyFields }, child);
-}))
 }
 
 const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps,
@@ -89,7 +66,6 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   
   const type = child?.type as any;
   if (type === "button" || type === Button) return child;
-
 
   const isValidated =
     type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
@@ -114,8 +90,14 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
     }
     return React.createElement(type, { ...elem });
   }
-  return processChild({ defaultValues, children, onSubmit, mode, ...rest },
-    { register, setValue, errors, touchedFields, dirtyFields }, child);;
+
+  if (!child.props) return child;
+  if (!child.props.children) return child;
+
+  return React.Children.map(child.props.children, (nextChild: ReactElement) => {
+    return processOneChild({ defaultValues, children: child.props.children, onSubmit, mode, ...rest },
+      { register, setValue, errors, touchedFields, dirtyFields }, nextChild);
+  })
 }
 
 ValidatedForm.displayName = 'ValidatedForm';

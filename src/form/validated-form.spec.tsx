@@ -924,12 +924,12 @@ describe('ValidatedForm', () => {
     });
 
     describe('validate form with nested input in element', () => {
-      const mockSubmit = jest.fn((anyinput0, testinput, anyinput, anyinput2) => {
+      const mockSubmit = jest.fn((anyinput) => {
         // do nothing
       });
 
-      const onSubmit = ({ anyinput0, testinput, anyinput, anyinput2 }) => {
-        mockSubmit(anyinput0, testinput, anyinput, anyinput2);
+      const onSubmit = ({ anyinput }) => {
+        mockSubmit(anyinput);
       };
 
       beforeEach(() => {
@@ -938,30 +938,12 @@ describe('ValidatedForm', () => {
             onSubmit={onSubmit}
             className="myform"
           >
-            <ValidatedField
-              className="col-md-6"
-              name="anyinput0"
-              label="anyinput0"
-              id="anyinput0"
-            />
-
             <div className="row">
-              <div className="row">
-                <ValidatedField name="testinput" label="testinput" id="testinput" />
-              </div>
-
               <ValidatedField
                 className="col-md-6"
                 name="anyinput"
                 label="anyinput"
                 id="anyinput"
-              />
-
-              <ValidatedField
-                className="col-md-6"
-                name="anyinput2"
-                label="anyinput2"
-                id="anyinput2"
               />
             </div>
             
@@ -971,30 +953,15 @@ describe('ValidatedForm', () => {
       });
 
       it('should sent on submit', async () => {
-        fireEvent.input(screen.getByLabelText('anyinput0'), {
-          target: {
-            value: 'custominput0',
-          },
-        });
-        fireEvent.input(screen.getByLabelText('testinput'), {
-          target: {
-            value: 'custominputtest',
-          },
-        });
         fireEvent.input(screen.getByLabelText('anyinput'), {
           target: {
             value: 'custominput',
           },
         });
-        fireEvent.input(screen.getByLabelText('anyinput2'), {
-          target: {
-            value: 'custominput2',
-          },
-        });
 
         fireEvent.submit(screen.getByRole('button'));
         await waitFor(() => {
-          expect(mockSubmit).toBeCalledWith('custominput0', 'custominputtest', 'custominput', 'custominput2');
+          expect(mockSubmit).toBeCalledWith('custominput');
         })
       });
     });
