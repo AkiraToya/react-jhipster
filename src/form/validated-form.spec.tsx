@@ -1051,6 +1051,45 @@ describe('ValidatedForm', () => {
   });
 });
 
+describe('Button with Multiple Child', () => {
+  const mockSubmit = jest.fn((anyinput) => {
+    // do nothing
+  });
+
+  const onSubmit = ({ anyinput }) => {
+    mockSubmit(anyinput);
+  };
+
+  beforeEach(() => {
+    render(
+      <ValidatedForm
+        onSubmit={onSubmit}
+        className="myform"
+        defaultValues={{
+          anyinput: ""
+        }}
+      >
+        <div className="row">
+          <div className="row">
+            <ValidatedField
+              name="anyinput"
+              label="anyinput"
+              id="anyinput"
+            />
+          </div>
+
+        </div>
+
+        <button type="submit"><span>Test</span><span>Submit 2</span></button>
+      </ValidatedForm>
+    );
+  });
+
+  it('without default value renders an empty input', () => {
+    fireEvent.submit(screen.getByRole('button'));
+  });
+})
+
 describe('isEmail', () => {
   it('should return false when passed object is not an email', () => {
     expect(isEmail('foo')).toEqual(false);

@@ -82,8 +82,13 @@ const processChild = ({ defaultValues, children, onSubmit, mode, ...rest }: Vali
 
 const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps,
   { register, setValue, errors, touchedFields, dirtyFields }: any, child: ReactElement) => {
-  if (!child.props || child.props === null) return child;
+  
+  if (!child || !child.props || child.props === null) return child;
+  
   const type = child?.type as any;
+  if (type === "button") return child;
+
+
   const isValidated =
     type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
 
