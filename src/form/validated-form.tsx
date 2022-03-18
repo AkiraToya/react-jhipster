@@ -74,7 +74,7 @@ const processChild = ({ defaultValues, children, onSubmit, mode, ...rest }: Vali
     return newElement
   }
 
-  return (element.props.children.map(children, (child: ReactElement) => {
+  return ([...element.props.children].map((child: ReactElement) => {
     return processOneChild({ defaultValues, children, onSubmit, mode, ...rest },
       { register, setValue, errors, touchedFields, dirtyFields }, child);
 }))

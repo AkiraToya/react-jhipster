@@ -947,9 +947,7 @@ describe('ValidatedForm', () => {
                 label="anyinput"
                 id="anyinput"
               />
-            </div>
-
-            <div className="row">
+              
               <ValidatedField
                 name="anyinput2"
                 label="anyinput2"
