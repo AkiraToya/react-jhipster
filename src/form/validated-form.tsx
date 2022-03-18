@@ -94,10 +94,14 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (!child.props) return child;
   if (!child.props.children) return child;
 
-  return React.Children.map(child.props.children, (nextChild: ReactElement) => {
-    return processOneChild({ defaultValues, children: child.props.children, onSubmit, mode, ...rest },
-      { register, setValue, errors, touchedFields, dirtyFields }, nextChild);
+  child = React.cloneElement(child, {
+    children: React.Children.map(child.props.children, (nextChild: ReactElement) => {
+      return processOneChild({ defaultValues, children: child.props.children, onSubmit, mode, ...rest },
+        { register, setValue, errors, touchedFields, dirtyFields }, nextChild);
+    })
   })
+
+  return child
 }
 
 ValidatedForm.displayName = 'ValidatedForm';
