@@ -52,34 +52,62 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...rest}>
       {React.Children.map(children, (child: ReactElement) => {
-        const type = child?.type as any;
-        const isValidated =
-          type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
-
-        if (isValidated) {
-          const childName = child.props.name;
-          const elem = {
-            ...child.props,
-            register: child.props.register || register,
-            error: child.props.error || errors[childName],
-            isTouched: typeof child.props.isTouched === 'undefined' ? touchedFields[childName] : child.props.isTouched,
-            isDirty: typeof child.props.isDirty === 'undefined' ? dirtyFields[childName] : child.props.isDirty,
-            key: childName,
-          };
-          if (type.displayName === 'ValidatedBlobField') {
-            const defaultValue = defaultValues[childName];
-            const defaultContentType = defaultValues[`${childName}ContentType`];
-            elem.setValue = typeof child.props.setValue === 'undefined' ? setValue : child.props.setValue;
-            elem.defaultValue = typeof child.props.defaultValue === 'undefined' ? defaultValue : child.props.defaultValue;
-            elem.defaultContentType =
-              typeof child.props.defaultContentType === 'undefined' ? defaultContentType : child.props.defaultContentType;
-          }
-          return React.createElement(type, { ...elem });
-        }
-        return child;
+        return processOneChild({ defaultValues, children, onSubmit, mode, ...rest }, 
+          {register, setValue, errors, touchedFields, dirtyFields}, child);
       })}
     </Form>
   );
+}
+
+const processChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps, 
+  { register, setValue, errors, touchedFields, dirtyFields }: any, element: ReactElement) => {
+
+  if (!element.props) return element;
+
+  if (!element.props.children) return element;
+
+  if(!Array.isArray(element.props.children)){
+    const newElement = processOneChild({ defaultValues, children, onSubmit, mode, ...rest },
+      { register, setValue, errors, touchedFields, dirtyFields }, element.props.children);
+    
+    if (element.props.children === newElement) return element
+    return newElement
+  }
+
+  return (element.props.children.map(children, (child: ReactElement) => {
+    return processOneChild({ defaultValues, children, onSubmit, mode, ...rest },
+      { register, setValue, errors, touchedFields, dirtyFields }, child);
+}))
+}
+
+const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps,
+  { register, setValue, errors, touchedFields, dirtyFields }: any, child: ReactElement) => {
+  const type = child?.type as any;
+  const isValidated =
+    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
+
+  if (isValidated) {
+    const childName = child.props.name;
+    const elem = {
+      ...child.props,
+      register: child.props.register || register,
+      error: child.props.error || errors[childName],
+      isTouched: typeof child.props.isTouched === 'undefined' ? touchedFields[childName] : child.props.isTouched,
+      isDirty: typeof child.props.isDirty === 'undefined' ? dirtyFields[childName] : child.props.isDirty,
+      key: childName,
+    };
+    if (type.displayName === 'ValidatedBlobField') {
+      const defaultValue = defaultValues[childName];
+      const defaultContentType = defaultValues[`${childName}ContentType`];
+      elem.setValue = typeof child.props.setValue === 'undefined' ? setValue : child.props.setValue;
+      elem.defaultValue = typeof child.props.defaultValue === 'undefined' ? defaultValue : child.props.defaultValue;
+      elem.defaultContentType =
+        typeof child.props.defaultContentType === 'undefined' ? defaultContentType : child.props.defaultContentType;
+    }
+    return React.createElement(type, { ...elem });
+  }
+  return processChild({ defaultValues, children, onSubmit, mode, ...rest },
+    { register, setValue, errors, touchedFields, dirtyFields }, child);;
 }
 
 ValidatedForm.displayName = 'ValidatedForm';

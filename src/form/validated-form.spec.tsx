@@ -922,6 +922,114 @@ describe('ValidatedForm', () => {
         expect(mockSubmit).toBeCalledWith('test@mail.com', 'password', true, 'v1', ['v1', 'v3']);
       });
     });
+
+    describe('validate form with nested input in element', () => {
+      const mockSubmit = jest.fn((anyinput, anyinput2) => {
+        // do nothing
+      });
+
+      const onSubmit = ({ anyinput, anyinput2 }) => {
+        mockSubmit(anyinput, anyinput2);
+      };
+
+      beforeEach(() => {
+        render(
+          <ValidatedForm
+            onSubmit={onSubmit}
+            className="myform"
+            defaultValues={{
+              anyinput: ""
+            }}
+          >
+            <div className="row">
+              <ValidatedField
+                name="anyinput"
+                label="anyinput"
+                id="anyinput"
+              />
+            </div>
+
+            <div className="row">
+              <ValidatedField
+                name="anyinput2"
+                label="anyinput2"
+                id="anyinput2"
+              />
+            </div>
+            
+            <button type="submit">SUBMIT</button>
+          </ValidatedForm>
+        );
+      });
+
+      it('should sent on submit', async () => {
+        fireEvent.input(screen.getByLabelText('anyinput'), {
+          target: {
+            value: 'custominput',
+          },
+        });
+        fireEvent.input(screen.getByLabelText('anyinput2'), {
+          target: {
+            value: 'custominput2',
+          },
+        });
+
+        fireEvent.submit(screen.getByRole('button'));
+        await waitFor(() => {
+          expect(mockSubmit).toBeCalledWith('custominput', 'custominput2');
+        })
+      });
+    });
+
+    describe('validate form with nested twice input in element', () => {
+      const mockSubmit = jest.fn((anyinput) => {
+        // do nothing
+      });
+
+      const onSubmit = ({ anyinput }) => {
+        mockSubmit(anyinput);
+      };
+
+      beforeEach(() => {
+        render(
+          <ValidatedForm
+            onSubmit={onSubmit}
+            className="myform"
+            defaultValues={{
+              anyinput: ""
+            }}
+          >
+            <div className="row">
+              <div className="row">
+                <ValidatedField
+                  name="anyinput"
+                  label="anyinput"
+                  id="anyinput"
+                />
+              </div>
+              
+            </div>
+
+            <button type="submit">SUBMIT</button>
+          </ValidatedForm>
+        );
+      });
+
+      it('should sent on submit', async () => {
+        fireEvent.input(screen.getByLabelText('anyinput'), {
+          target: {
+            value: 'custominput',
+          },
+        });
+
+        fireEvent.submit(screen.getByRole('button'));
+        await waitFor(() => {
+          expect(mockSubmit).toBeCalledWith('custominput');
+        })
+      });
+    });
+
+
   });
 });
 
