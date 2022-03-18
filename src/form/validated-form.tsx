@@ -86,7 +86,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (!child || !child.props || child.props === null) return child;
   
   const type = child?.type as any;
-  if (type === "button") return child;
+  if (type === "button" || type === Button) return child;
 
 
   const isValidated =
