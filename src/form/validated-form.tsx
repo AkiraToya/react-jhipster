@@ -52,6 +52,8 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...rest}>
       {React.Children.map(children, (child: ReactElement) => {
+        if(child.type === Button || child.type === "button") return child;
+
         return processOneChild({ defaultValues, children, onSubmit, mode, ...rest }, 
           {register, setValue, errors, touchedFields, dirtyFields}, child);
       })}

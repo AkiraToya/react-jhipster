@@ -1080,7 +1080,11 @@ describe('Button with Multiple Child', () => {
 
         </div>
 
-        <Button><span>Test</span><span>Submit 3</span></Button>
+        <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit">
+          <svg />
+          &nbsp;
+          <span>Save</span>
+        </Button>
       </ValidatedForm>
     );
   });
