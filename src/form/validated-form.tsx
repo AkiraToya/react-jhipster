@@ -62,8 +62,8 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
 const processChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps, 
   { register, setValue, errors, touchedFields, dirtyFields }: any, element: ReactElement) => {
 
+  if (element.type === "button" || element.type === Button) return element;
   if (!element.props) return element;
-
   if (!element.props.children) return element;
 
   if(!Array.isArray(element.props.children)){
