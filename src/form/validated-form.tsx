@@ -70,7 +70,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (type === "button" || type === Button) return child;
 
   const isValidated =
-    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField', 'ValidatedInputAutoComplete'].includes(type.displayName);
+    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
 
   if (isValidated) {
     const childName = child.props.name;
