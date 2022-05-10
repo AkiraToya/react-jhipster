@@ -17,6 +17,8 @@ import { Button, Col, Form, FormFeedback, FormGroup, Input, InputProps, Label, R
 
 import { byteSize, isEmpty, openFile, setFileData } from '../util';
 
+import Select from 'react-select'
+
 export interface ValidatedFormProps {
   children: React.ReactNode;
   onSubmit: SubmitHandler<FieldValues>;
@@ -68,7 +70,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (type === "button" || type === Button) return child;
 
   const isValidated =
-    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
+    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField', 'ValidatedInputAutoComplete'].includes(type.displayName);
 
   if (isValidated) {
     const childName = child.props.name;
@@ -206,6 +208,73 @@ export function ValidatedInput({
 }
 
 ValidatedInput.displayName = 'ValidatedInput';
+
+export interface ValidatedInputAutoCompleteProps extends ValidatedInputProps {
+  options?: any
+  customOnChange?: (selected: { value: string, label: string }[]) => void
+}
+
+export function ValidatedInputAutoComplete({
+  name,
+  id = name,
+  register,
+  error,
+  isTouched,
+  isDirty,
+  validate,
+  children,
+  className,
+  onChange,
+  onBlur,
+  options,
+  multiple,
+  defaultValue,
+  customOnChange,
+  ...attributes
+}: ValidatedInputAutoCompleteProps): JSX.Element {
+  if (!register) {
+    return (
+      <Select name={name} id={id} className={className} onChange={customOnChange} onBlur={onBlur} options={options}
+        {...multiple ? { isMulti: true } : { isMulti: false }}
+        {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
+        {...attributes} />
+    );
+  }
+
+  className = className || '';
+  className = isTouched ? `${className} is-touched` : className;
+  className = isDirty ? `${className} is-dirty` : className;
+
+  // below is not sure how to use it for now. don't know how to combine it with react-select
+  const { name: registeredName, onBlur: onBlurValidate, onChange: onChangeValidate, ref } = register(name, validate);
+  return (
+    <>
+      <Select
+        name={registeredName}
+        id={id}
+        valid={isTouched && !error}
+        invalid={!!error}
+        innerRef={ref}
+        className={className}
+        onChange={e => {
+          void onChangeValidate(e);
+          onChange && onChange(e);
+        }}
+        onBlur={e => {
+          void onBlurValidate(e);
+          onBlur && onBlur(e);
+        }}
+        options={options}
+        {...multiple ? { isMulti: true } : { isMulti: false }}
+        {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
+        {...attributes}
+      />
+      {error && <FormFeedback>{error.message}</FormFeedback>}
+    </>
+  );
+}
+
+ValidatedInputAutoComplete.displayName = 'ValidatedInputAutoComplete';
 
 /**
  * A utility wrapper over Reactstrap FormGroup + Label + ValidatedInput
