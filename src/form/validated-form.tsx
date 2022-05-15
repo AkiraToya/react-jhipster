@@ -216,7 +216,7 @@ ValidatedInput.displayName = 'ValidatedInput';
 
 export interface ValidatedInputAutoCompleteProps extends ValidatedInputProps {
   options?: any
-  control: any
+  control?: any
   customOnChange?: (selected: { value: string, label: string }[]) => void
 }
 
@@ -253,32 +253,22 @@ export function ValidatedInputAutoComplete({
   className = isDirty ? `${className} is-dirty` : className;
 
   // below is not sure how to use it for now. don't know how to combine it with react-select
-  const { name: registeredName, onBlur: onBlurValidate, onChange: onChangeValidate, ref } = register(name, validate);
+  const { name: registeredName } = register(name, validate);
   return (
     <>
       <Controller name={registeredName} control={control}
-        render={({field}) => 
+        render={({ field }) =>
           <Select
             id={id}
-            valid={isTouched && !error}
-            invalid={!!error}
-            innerRef={ref}
             className={className}
-            onChange={e => {
-              void onChangeValidate(e);
-              onChange && onChange(e);
-            }}
-            onBlur={e => {
-              void onBlurValidate(e);
-              onBlur && onBlur(e);
-            }}
             options={options}
+            onChange={(e: { label: string, value: string }[]) => {
+              field.onChange(e.map(value => value.value.toString()))
+            }}
             {...multiple ? { isMulti: true } : { isMulti: false }}
             {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
-            {...attributes}
-            {...field}
-          />
-        } />
+
+          />} />
       {error && <FormFeedback>{error.message}</FormFeedback>}
     </>
   );
