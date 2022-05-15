@@ -82,7 +82,7 @@
     "react-select": "5.3.2",
     "@types/react-select": "^5.0.1"
   },
-  "version": "0.19.17",
+  "version": "0.19.18",
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
