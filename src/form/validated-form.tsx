@@ -237,6 +237,15 @@ export function ValidatedInputAutoComplete({
   defaultValue,
   customOnChange,
   control,
+  row,
+  col,
+  check,
+  disabled,
+  hidden,
+  tag,
+  label,
+  labelClass,
+  labelHidden,
   ...attributes
 }: ValidatedInputAutoCompleteProps): JSX.Element {
   if (!register) {
@@ -254,23 +263,36 @@ export function ValidatedInputAutoComplete({
 
   // below is not sure how to use it for now. don't know how to combine it with react-select
   const { name: registeredName } = register(name, validate);
-  return (
-    <>
-      <Controller name={registeredName} control={control}
-        render={({ field }) =>
-          <Select
-            id={id}
-            className={className}
-            options={options}
-            onChange={(e: { label: string, value: string }[]) => {
-              field.onChange(e.map(value => value.value.toString()))
-            }}
-            {...multiple ? { isMulti: true } : { isMulti: false }}
-            {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
+  const input = <>
+    <Controller name={registeredName} control={control}
+      render={({ field }) =>
+        <Select
+          id={id}
+          className={className}
+          placeholder={attributes.label}
+          options={options}
+          onChange={(e: { label: string, value: string }[]) => {
+            field.onChange(e.map(value => value.value.toString()))
+          }}
+          {...multiple ? { isMulti: true } : { isMulti: false }}
+          {...attributes}
+          {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
 
-          />} />
-      {error && <FormFeedback>{error.message}</FormFeedback>}
-    </>
+        />} />
+    {error && <FormFeedback>{error.message}</FormFeedback>}
+  </>
+
+  const inputRow = row ? <Col {...col}>{input}</Col> : input;
+  return (
+    <FormGroup check={check} disabled={disabled} row={row} className={className} hidden={hidden} tag={tag}>
+      {check && inputRow}
+      {label && (
+        <Label id={`${name}Label`} check={check} for={id} className={labelClass} hidden={labelHidden || hidden}>
+          {label}
+        </Label>
+      )}
+      {!check && inputRow}
+    </FormGroup>
   );
 }
 
