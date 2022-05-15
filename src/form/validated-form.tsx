@@ -72,7 +72,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (type === "button" || type === Button) return child;
 
   const isValidated =
-    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField', 'ValidatedInputAutoComplete'].includes(type.displayName);
+    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField', 'ValidatedInputAutoComplete', 'ValidatedCustomControlledField'].includes(type.displayName);
 
   if (isValidated) {
     const childName = child.props.name;
@@ -95,6 +95,12 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
     if (type.displayName === 'ValidatedInputAutoComplete'){
       elem.control = control
     }
+
+    if (type.displayName === 'ValidatedCustomControlledField'){
+      elem.control = control
+      elem.setValue = setValue
+    }
+    
     return React.createElement(type, { ...elem });
   }
 
