@@ -64,7 +64,7 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
 }
 
 const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: ValidatedFormProps,
-  { register, setValue, errors, touchedFields, dirtyFields }: any, child: ReactElement) => {
+  { register, setValue, errors, touchedFields, dirtyFields, control }: any, child: ReactElement) => {
   
   if (!child || !child.props || child.props === null) return child;
   
@@ -92,6 +92,9 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
       elem.defaultContentType =
         typeof child.props.defaultContentType === 'undefined' ? defaultContentType : child.props.defaultContentType;
     }
+    if (type.displayName === 'ValidatedInputAutoComplete'){
+      elem.control = control
+    }
     return React.createElement(type, { ...elem });
   }
 
@@ -101,7 +104,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   child = React.cloneElement(child, {
     children: React.Children.map(child.props.children, (nextChild: ReactElement) => {
       return processOneChild({ defaultValues, children: child.props.children, onSubmit, mode, ...rest },
-        { register, setValue, errors, touchedFields, dirtyFields }, nextChild);
+        { register, setValue, errors, touchedFields, dirtyFields, control }, nextChild);
     })
   })
 
