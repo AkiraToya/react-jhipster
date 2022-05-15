@@ -3,6 +3,7 @@
 import React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 import {
+  Controller,
   DefaultValues,
   FieldError,
   FieldValues,
@@ -44,6 +45,7 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
     register,
     reset,
     setValue,
+    control,
     formState: { errors, touchedFields, dirtyFields },
   } = useForm({ mode: mode || 'onTouched', defaultValues });
 
@@ -54,7 +56,7 @@ export function ValidatedForm({ defaultValues, children, onSubmit, mode, ...rest
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...rest}>
       {React.Children.map(children, (child: ReactElement) => {
-        return processOneChild({ defaultValues, children, onSubmit, mode, ...rest }, 
+        return processOneChild({ defaultValues, children, onSubmit, mode, control, ...rest }, 
           {register, setValue, errors, touchedFields, dirtyFields}, child);
       })}
     </Form>
@@ -70,7 +72,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
   if (type === "button" || type === Button) return child;
 
   const isValidated =
-    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField'].includes(type.displayName);
+    type && child?.props?.name && ['ValidatedField', 'ValidatedInput', 'ValidatedBlobField', 'ValidatedInputAutoComplete'].includes(type.displayName);
 
   if (isValidated) {
     const childName = child.props.name;
@@ -211,6 +213,7 @@ ValidatedInput.displayName = 'ValidatedInput';
 
 export interface ValidatedInputAutoCompleteProps extends ValidatedInputProps {
   options?: any
+  control: any
   customOnChange?: (selected: { value: string, label: string }[]) => void
 }
 
@@ -230,6 +233,7 @@ export function ValidatedInputAutoComplete({
   multiple,
   defaultValue,
   customOnChange,
+  control,
   ...attributes
 }: ValidatedInputAutoCompleteProps): JSX.Element {
   if (!register) {
@@ -249,26 +253,29 @@ export function ValidatedInputAutoComplete({
   const { name: registeredName, onBlur: onBlurValidate, onChange: onChangeValidate, ref } = register(name, validate);
   return (
     <>
-      <Select
-        name={registeredName}
-        id={id}
-        valid={isTouched && !error}
-        invalid={!!error}
-        innerRef={ref}
-        className={className}
-        onChange={e => {
-          void onChangeValidate(e);
-          onChange && onChange(e);
-        }}
-        onBlur={e => {
-          void onBlurValidate(e);
-          onBlur && onBlur(e);
-        }}
-        options={options}
-        {...multiple ? { isMulti: true } : { isMulti: false }}
-        {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
-        {...attributes}
-      />
+      <Controller name={registeredName} control={control}
+        render={({field}) => 
+          <Select
+            id={id}
+            valid={isTouched && !error}
+            invalid={!!error}
+            innerRef={ref}
+            className={className}
+            onChange={e => {
+              void onChangeValidate(e);
+              onChange && onChange(e);
+            }}
+            onBlur={e => {
+              void onBlurValidate(e);
+              onBlur && onBlur(e);
+            }}
+            options={options}
+            {...multiple ? { isMulti: true } : { isMulti: false }}
+            {...defaultValue ? { defaultValue: JSON.parse(defaultValue.toString()) } : {}}
+            {...attributes}
+            {...field}
+          />
+        } />
       {error && <FormFeedback>{error.message}</FormFeedback>}
     </>
   );
