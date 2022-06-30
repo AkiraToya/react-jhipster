@@ -277,8 +277,13 @@ export function ValidatedInputAutoComplete({
           className={className}
           placeholder={attributes.label}
           options={options}
-          onChange={(e: { label: string, value: string }[]) => {
-            field.onChange(e.map(value => value.value.toString()))
+          onChange={(e: any) => {
+            if(multiple){
+              field.onChange(e.map(value => value.value.toString()))
+            }
+            else{
+              field.onChange(e.value.toString())
+            }
           }}
           {...multiple ? { isMulti: true } : { isMulti: false }}
           {...attributes}
