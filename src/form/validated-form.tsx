@@ -94,6 +94,7 @@ const processOneChild = ({ defaultValues, children, onSubmit, mode, ...rest }: V
     }
     if (type.displayName === 'ValidatedInputAutoComplete'){
       elem.control = control
+      elem.setValue = setValue
     }
 
     if (type.displayName === 'ValidatedCustomControlledField'){
