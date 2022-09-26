@@ -14,6 +14,9 @@ describe('ValidatedInput', () => {
     it('without default value renders an empty input', () => {
       const { container } = render(<ValidatedInput name="test-1" />);
       const input = container.querySelector('input');
+
+      if(!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.id).toEqual('test-1');
       expect(input.type).toEqual('text');
@@ -23,6 +26,8 @@ describe('ValidatedInput', () => {
     it('with id doesnt use name as default id in input', () => {
       const { container } = render(<ValidatedInput name="test-1" id="my-id" />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.id).toEqual('my-id');
       expect(input.type).toEqual('text');
@@ -32,6 +37,8 @@ describe('ValidatedInput', () => {
     it('with custom tag value renders an custom input', () => {
       const { container } = render(<ValidatedInput name="test-1" tag={Input} type="radio" id="test" />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('radio');
       expect(input.className).toEqual('form-check-input form-check-input');
@@ -40,6 +47,8 @@ describe('ValidatedInput', () => {
     it('with custom string tag value renders an custom input', () => {
       const { container } = render(<ValidatedInput name="test-1" tag="select" id="test" />);
       const input = container.querySelector('select');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('select-one');
       expect(input.className).toEqual('form-control');
@@ -48,6 +57,8 @@ describe('ValidatedInput', () => {
     it('with default value renders an input with value', () => {
       const { container } = render(<ValidatedInput name="test-1" defaultValue="hello" isTouched={true} />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -75,6 +86,8 @@ describe('ValidatedInput', () => {
     it('without default value renders an empty input', () => {
       const { container } = render(<InputApp name="test" defaultValue="" />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -83,6 +96,8 @@ describe('ValidatedInput', () => {
     it('with default value renders an input', () => {
       const { container } = render(<InputApp name="test" defaultValue="hello" isTouched={true} />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual(' is-touched is-valid form-control');
@@ -98,6 +113,8 @@ describe('ValidatedInput', () => {
         );
 
         let input = container.querySelector('input');
+        if (!input) fail("Input is null")
+
         expect(input.name).toEqual('test');
         expect(input.type).toEqual('text');
         expect(input.className).toEqual('form-control');
@@ -114,6 +131,8 @@ describe('ValidatedInput', () => {
 
         await waitFor(() => expect(screen.getByText('this is required')).not.toBeNull());
         input = container.querySelector('input');
+        if (!input) fail("Input is null")
+
         expect(input.className).toEqual('is-invalid form-control');
         expect(input.value).toEqual('');
       });
@@ -128,6 +147,8 @@ describe('ValidatedField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -138,6 +159,8 @@ describe('ValidatedField', () => {
       const fg = container.querySelector('fieldset.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control form-control');
@@ -150,6 +173,8 @@ describe('ValidatedField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -165,6 +190,8 @@ describe('ValidatedField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -177,6 +204,8 @@ describe('ValidatedField', () => {
       const { container } = render(<ValidatedField name="test-1" label="Label" check />);
       const fg = container.querySelector('div.form-check');
       expect(fg).not.toBeNull();
+      if (!fg) fail("fg is null")
+
       expect(fg.innerHTML).toEqual(
         '<input name="test-1" id="test-1" type="text" class="form-control"><label id="test-1Label" class="form-check-label form-label">Label</label>'
       );
@@ -203,6 +232,8 @@ describe('ValidatedField', () => {
     it('without default value renders an empty input', () => {
       const { container } = render(<InputApp name="test" defaultValue="" />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual('form-control');
@@ -211,6 +242,8 @@ describe('ValidatedField', () => {
     it('with default value renders an input', () => {
       const { container } = render(<InputApp name="test" defaultValue="hello" isTouched={true} />);
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual(' is-touched is-valid form-control');
@@ -226,6 +259,8 @@ describe('ValidatedField', () => {
         );
 
         let input = container.querySelector('input');
+        if (!input) fail("Input is null")
+
         expect(input.name).toEqual('test');
         expect(input.type).toEqual('text');
         expect(input.className).toEqual('form-control');
@@ -242,6 +277,8 @@ describe('ValidatedField', () => {
 
         await waitFor(() => expect(screen.getByText('this is required')).not.toBeNull());
         input = container.querySelector('input');
+        if (!input) fail("Input is null")
+
         expect(input.className).toEqual('is-invalid form-control');
         expect(input.value).toEqual('');
       });
@@ -256,6 +293,8 @@ describe('ValidatedBlobField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.id).toEqual('test-1');
       expect(input.type).toEqual('file');
@@ -267,6 +306,8 @@ describe('ValidatedBlobField', () => {
       const fg = container.querySelector('fieldset.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('file');
       expect(input.className).toEqual('form-control');
@@ -279,6 +320,8 @@ describe('ValidatedBlobField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.id).toEqual('my-id');
       expect(input.type).toEqual('file');
@@ -295,6 +338,8 @@ describe('ValidatedBlobField', () => {
       const fg = container.querySelector('div.mb-3');
       expect(fg).not.toBeNull();
       const input = container.querySelector('input');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-1');
       expect(input.type).toEqual('file');
       expect(input.className).toEqual('form-control');
@@ -327,12 +372,16 @@ describe('ValidatedBlobField', () => {
     }
     it('without default value renders an empty inputs with no data preview', () => {
       const { container } = render(<InputApp name="test" defaultValue="" />);
-      const inputContentType: HTMLInputElement = container.querySelector('input');
+      const inputContentType: HTMLInputElement | null = container.querySelector('input');
+      if (!inputContentType) fail("InputContentType is null")
+
       expect(inputContentType.id).toEqual('file_test_content_type');
       expect(inputContentType.name).toEqual('testContentType');
       expect(inputContentType.type).toEqual('hidden');
       expect(inputContentType.value).toEqual('');
-      const input: HTMLInputElement = container.querySelector('input.form-control');
+      const input: HTMLInputElement | null = container.querySelector('input.form-control');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.id).toEqual('test');
       expect(input.type).toEqual('file');
@@ -351,17 +400,23 @@ describe('ValidatedBlobField', () => {
           imageClassName="my-image"
         />
       );
-      const inputContentType: HTMLInputElement = container.querySelector('input');
+      const inputContentType: HTMLInputElement | null = container.querySelector('input');
+      if (!inputContentType) fail("InputContentType is null")
+
       expect(inputContentType.name).toEqual('testContentType');
-      const input: HTMLInputElement = container.querySelector('input.form-control');
+      const input: HTMLInputElement | null = container.querySelector('input.form-control');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.id).toEqual('my-id');
       expect(input.type).toEqual('file');
       expect(input.className).toEqual(' is-touched is-valid form-control');
-      const div: HTMLDivElement = container.querySelector('div.jhi-validated-blob-field-item-container');
+      const div: HTMLDivElement | null = container.querySelector('div.jhi-validated-blob-field-item-container');
       expect(div).not.toBeNull();
-      const img: HTMLImageElement = container.querySelector('img.my-image');
+      const img: HTMLImageElement | null = container.querySelector('img.my-image');
       expect(img).not.toBeNull();
+      if (!img) fail("img is null")
+
       expect(img.src).toEqual('data:image/jpg;base64,hello');
       expect(container.querySelector('div.jhi-validated-blob-field-item-row')).not.toBeNull();
       expect(container.querySelector('div.jhi-validated-blob-field-item-row-col')).not.toBeNull();
@@ -378,15 +433,21 @@ describe('ValidatedBlobField', () => {
           clearBtn={() => <button className="my-btn" />}
         />
       );
-      const inputContentType: HTMLInputElement = container.querySelector('input');
+      const inputContentType: HTMLInputElement | null = container.querySelector('input');
+      if (!inputContentType) fail("InputContentType is null")
+
       expect(inputContentType.name).toEqual('testContentType');
-      const input: HTMLInputElement = container.querySelector('input.form-control');
+      const input: HTMLInputElement | null = container.querySelector('input.form-control');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test');
       expect(input.type).toEqual('file');
       expect(input.className).toEqual(' is-touched is-valid form-control');
-      const div: HTMLDivElement = container.querySelector('div.jhi-validated-blob-field-item-container');
+      const div: HTMLDivElement | null = container.querySelector('div.jhi-validated-blob-field-item-container');
       expect(div).not.toBeNull();
-      const anchor: HTMLAnchorElement = container.querySelector('a.jhi-validated-blob-field-item-anchor');
+      const anchor: HTMLAnchorElement | null = container.querySelector('a.jhi-validated-blob-field-item-anchor');
+      if (!anchor) fail("Anchor is null")
+
       expect(anchor).not.toBeNull();
       expect(anchor.innerHTML).toEqual('open this');
       expect(container.querySelector('div.jhi-validated-blob-field-item-row')).not.toBeNull();
@@ -411,13 +472,19 @@ describe('ValidatedBlobField', () => {
           />
         );
 
-        const inputContentType: HTMLInputElement = container.querySelector('input');
+        const inputContentType: HTMLInputElement | null = container.querySelector('input');
+        if (!inputContentType) fail("InputContentType is null")
+
         expect(inputContentType.name).toEqual('testContentType');
-        let input: HTMLInputElement = container.querySelector('input.form-control');
+        let input: HTMLInputElement | null = container.querySelector('input.form-control');
+        if (!input) fail("Input is null")
+
         expect(input.name).toEqual('test');
         expect(input.type).toEqual('file');
         expect(input.className).toEqual('form-control');
-        let img: HTMLImageElement = container.querySelector('img.my-image');
+        let img: HTMLImageElement | null = container.querySelector('img.my-image');
+        if (!img) fail("img is null")
+
         expect(img).not.toBeNull();
         expect(img.src).toEqual('data:image/jpg;base64,hello');
 
@@ -432,6 +499,8 @@ describe('ValidatedBlobField', () => {
 
         await waitFor(() => expect(screen.getByText('this is required')).not.toBeNull());
         input = container.querySelector('input.form-control');
+        if (!input) fail("Input is null")
+
         expect(input.className).toEqual('is-invalid form-control');
         expect(input.value).toEqual('');
         img = container.querySelector('img.my-image');
@@ -482,7 +551,9 @@ describe('ValidatedForm', () => {
       );
       const form = container.querySelector('form.myform');
       expect(form).not.toBeNull();
-      const input: HTMLInputElement = container.querySelector('input[name="test-12"]');
+      const input: HTMLInputElement | null = container.querySelector('input[name="test-12"]');
+      if (!input) fail("Input is null")
+
       expect(input.name).toEqual('test-12');
       expect(input.type).toEqual('text');
       expect(input.className).toEqual(' is-touched is-dirty is-invalid form-control');
@@ -497,7 +568,9 @@ describe('ValidatedForm', () => {
             <ValidatedInput name="test-1" defaultValue="hello" />
           </ValidatedForm>
         );
-        const input: HTMLInputElement = container.querySelector('input[name="test-1"]');
+        const input: HTMLInputElement | null = container.querySelector('input[name="test-1"]');
+        if (!input) fail("Input is null")
+
         expect(input.name).toEqual('test-1');
         expect(input.type).toEqual('text');
         expect(input.className).toEqual('form-control');
@@ -510,7 +583,9 @@ describe('ValidatedForm', () => {
             <ValidatedField name="test-2" type="password" label="password" defaultValue="1231" />
           </ValidatedForm>
         );
-        const input2: HTMLInputElement = container.querySelector('input[name="test-2"]');
+        const input2: HTMLInputElement | null = container.querySelector('input[name="test-2"]');
+        if (!input2) fail("Input2 is null")
+
         expect(input2.name).toEqual('test-2');
         expect(input2.type).toEqual('password');
         expect(input2.className).toEqual('form-control');
@@ -523,7 +598,9 @@ describe('ValidatedForm', () => {
             <ValidatedField name="test-3" type="checkbox" value={true} check label="check label" />
           </ValidatedForm>
         );
-        const input3: HTMLInputElement = container.querySelector('input[name="test-3"]');
+        const input3: HTMLInputElement | null = container.querySelector('input[name="test-3"]');
+        if (!input3) fail("Input3 is null")
+
         expect(input3.name).toEqual('test-3');
         expect(input3.type).toEqual('checkbox');
         expect(input3.className).toEqual('form-check-input');
@@ -536,7 +613,9 @@ describe('ValidatedForm', () => {
             <ValidatedField name="test-4" type="radio" value="on" label="radio label" />
           </ValidatedForm>
         );
-        const input4: HTMLInputElement = container.querySelector('input[name="test-4"]');
+        const input4: HTMLInputElement | null = container.querySelector('input[name="test-4"]');
+        if (!input4) fail("Input4 is null")
+
         expect(input4.name).toEqual('test-4');
         expect(input4.type).toEqual('radio');
         expect(input4.className).toEqual('form-check-input');
@@ -557,12 +636,16 @@ describe('ValidatedForm', () => {
             </ValidatedField>
           </ValidatedForm>
         );
-        const input5: HTMLSelectElement = container.querySelector('select[name="test-5"]');
+        const input5: HTMLSelectElement | null = container.querySelector('select[name="test-5"]');
+        if (!input5) fail("Input5 is null")
+
         expect(input5.name).toEqual('test-5');
         expect(input5.className).toEqual('form-select');
         expect(input5.value).toEqual('value 1');
 
-        const input6: HTMLSelectElement = container.querySelector('select[name="test-6"]');
+        const input6: HTMLSelectElement | null = container.querySelector('select[name="test-6"]');
+        if (!input6) fail("Input6 is null")
+
         expect(input6.name).toEqual('test-6');
         expect(input6.multiple).toEqual(true);
         expect(input6.className).toEqual('form-select');
@@ -586,13 +669,17 @@ describe('ValidatedForm', () => {
           </ValidatedForm>
         );
 
-        const input: HTMLInputElement = container.querySelector('input[name="test1"]');
+        const input: HTMLInputElement | null = container.querySelector('input[name="test1"]');
+        if (!input) fail("Input is null")
+
         expect(input.name).toEqual('test1');
         expect(input.type).toEqual('text');
         expect(input.className).toEqual('form-control');
         expect(input.value).toEqual('test1');
 
-        const input2: HTMLInputElement = container.querySelector('input[name="test2"]');
+        const input2: HTMLInputElement | null = container.querySelector('input[name="test2"]');
+        if (!input2) fail("Input2 is null")
+
         expect(input2.name).toEqual('test2');
         expect(input2.type).toEqual('password');
         expect(input2.className).toEqual('form-control');
@@ -614,14 +701,18 @@ describe('ValidatedForm', () => {
           </ValidatedForm>
         );
         // should retain the value
-        const input3: HTMLInputElement = container.querySelector('input[name="test3"]');
+        const input3: HTMLInputElement | null = container.querySelector('input[name="test3"]');
+        if (!input3) fail("Input3 is null")
+
         expect(input3.name).toEqual('test3');
         expect(input3.type).toEqual('checkbox');
         expect(input3.className).toEqual('form-check-input');
         expect(input3.value).toEqual('true');
         expect(input3.checked).toEqual(true);
         // should retain the value
-        const input4: HTMLInputElement = container.querySelector('input[name="test4"]');
+        const input4: HTMLInputElement | null = container.querySelector('input[name="test4"]');
+        if (!input4) fail("Input4 is null")
+
         expect(input4.name).toEqual('test4');
         expect(input4.type).toEqual('radio');
         expect(input4.className).toEqual('form-check-input');
@@ -650,13 +741,17 @@ describe('ValidatedForm', () => {
             </ValidatedField>
           </ValidatedForm>
         );
-        const input5: HTMLSelectElement = container.querySelector('select[name="test5"]');
+        const input5: HTMLSelectElement | null = container.querySelector('select[name="test5"]');
+        if (!input5) fail("Input5 is null")
+
         expect(input5.name).toEqual('test5');
         expect(input5.className).toEqual('form-select');
         expect(input5.selectedOptions[0].value).toEqual('value 1');
         expect(input5.value).toEqual('value 1');
 
-        const input6: HTMLSelectElement = container.querySelector('select[name="test6"]');
+        const input6: HTMLSelectElement | null = container.querySelector('select[name="test6"]');
+        if (!input6) fail("Input6 is null")
+
         expect(input6.name).toEqual('test6');
         expect(input6.multiple).toEqual(true);
         expect(input6.className).toEqual('form-select');
